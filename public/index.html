@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Widget Test Page</title>
+  <style>
+    .widget {
+      border: 1px solid black;
+      padding: 10px;
+      margin: 5px;
+      background-color: white;
+    }
+
+    .initialized {
+      background-color: lightgreen;
+    }
+
+    .error {
+      background-color: lightpink;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="tree">
+    <div class="widget" widget="widgets/a">Widget A</div>
+    <div class="widget" widget="widgets/b">Widget B</div>
+    <div></div>
+    <div class="widget" widget="widgets/c">
+      Widget C
+      <div class="widget" widget="widgets/b">Widget B in C</div>
+    </div>
+  </div>
+  <button id="init">Init</button>
+  <button id="destroy">Destroy</button>
+  <div id="info"></div>
+
+  <script type="module">
+    import X from './X.js';
+
+    const root = document.getElementById('tree');
+    const info = document.getElementById('info');
+
+    document
+      .getElementById('init')
+      .addEventListener('click', () => {
+        X.init(root, (errors) => {
+          if (errors) {
+            info.textContent = `Errors: ${errors.join(', ')}`;
+          } else {
+            info.textContent = 'All widgets initialized successfully';
+          }
+        });
+      });
+
+    document
+      .getElementById('destroy')
+      .addEventListener('click', () => {
+        X.destroy(root);
+        info.textContent = 'All widgets destroyed';
+      });
+  </script>
+</body>
+
+</html>
